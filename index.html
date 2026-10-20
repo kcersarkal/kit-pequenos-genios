@@ -18,14 +18,103 @@
       0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.4); }
       50% { transform: scale(1.02); box-shadow: 0 20px 35px -5px rgba(234, 88, 12, 0.55); }
     }
+    /* Countdown Timer */
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 52px;
+    }
+    .countdown-num {
+      font-family: 'Fredoka', cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 4px 10px;
+      min-width: 52px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .countdown-label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 3px;
+      opacity: 0.85;
+    }
+    .countdown-sep {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.8rem;
+      font-weight: 700;
+      padding: 0 2px;
+      opacity: 0.7;
+      margin-top: -6px;
+    }
+    /* Checkout countdown block */
+    .checkout-countdown-num {
+      font-family: 'Fredoka', cursive;
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: #dc2626;
+      color: #fff;
+      border-radius: 10px;
+      padding: 6px 14px;
+      min-width: 60px;
+      text-align: center;
+      line-height: 1.1;
+      box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+    }
+    .checkout-countdown-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+      color: #991b1b;
+    }
+    @keyframes blink-border {
+      0%, 100% { border-color: #f97316; box-shadow: 0 0 0 0 rgba(249,115,22,0.3); }
+      50% { border-color: #dc2626; box-shadow: 0 0 0 6px rgba(220,38,38,0.1); }
+    }
+    .urgency-border { animation: blink-border 2s infinite; }
   </style>
 </head>
 <body class="bg-amber-50/40 text-slate-800 antialiased selection:bg-orange-200">
 
-  <!-- Faixa de Oferta Superior -->
-  <div class="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 text-white text-center py-2.5 px-4 text-xs md:text-sm font-bold tracking-wide shadow-sm flex items-center justify-center gap-2">
-    <svg class="w-4 h-4 shrink-0 text-amber-200" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
-    <span>OFERTA DE LANÇAMENTO: 199 Atividades Pedagógicas em 6 Volumes por apenas R$ 37,00 (Preço normal: <span class="line-through text-orange-200">R$ 97,00</span>)</span>
+  <!-- Faixa de Urgência com Countdown -->
+  <div id="top-banner" class="bg-gradient-to-r from-red-700 via-orange-600 to-red-700 text-white text-center py-3 px-4 shadow-sm">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
+      <div class="flex items-center gap-2 text-xs sm:text-sm font-bold">
+        <svg class="w-4 h-4 shrink-0 text-amber-200" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+        <span id="banner-text">OFERTA ESPECIAL termina em:</span>
+      </div>
+      <div class="flex items-center gap-1 text-white">
+        <div class="countdown-unit">
+          <span class="countdown-num" id="top-days">00</span>
+          <span class="countdown-label">dias</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="top-hours">00</span>
+          <span class="countdown-label">horas</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="top-mins">00</span>
+          <span class="countdown-label">min</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="top-secs">00</span>
+          <span class="countdown-label">seg</span>
+        </div>
+      </div>
+      <span class="text-amber-200 text-xs font-bold hidden sm:inline">• R$ 37 → R$ 57 após o prazo</span>
+    </div>
   </div>
 
   <!-- Hero Section -->
@@ -219,21 +308,50 @@
 
   <!-- Oferta / Checkout Section -->
   <section id="comprar" class="py-16 max-w-3xl mx-auto px-4">
-    <div class="bg-gradient-to-b from-white to-amber-50/90 rounded-3xl p-8 sm:p-12 shadow-2xl border-2 border-orange-400 text-center relative overflow-hidden">
+    <div id="checkout-card" class="bg-gradient-to-b from-white to-amber-50/90 rounded-3xl p-8 sm:p-12 shadow-2xl border-2 border-orange-400 urgency-border text-center relative overflow-hidden">
       
       <div class="bg-orange-500 text-white font-heading font-bold text-xs uppercase tracking-wider py-1.5 px-5 rounded-full inline-block mb-4 shadow-sm">
         Acesso Imediato e Vitalício
       </div>
 
       <h3 class="font-heading text-2xl sm:text-4xl font-bold text-slate-900 mb-2">Kit Completo Pequenos Gênios</h3>
-      <p class="text-slate-600 text-sm sm:text-base mb-6 font-medium">199 Atividades em 6 Volumes + 3 Trilhas por Idade + 2 Bônus + Manual</p>
+      <p class="text-slate-600 text-sm sm:text-base mb-4 font-medium">199 Atividades em 6 Volumes + 3 Trilhas por Idade + 2 Bônus + Manual</p>
+
+      <!-- Bloco de Urgência com Countdown no Checkout -->
+      <div id="checkout-urgency" class="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4">
+        <p class="text-red-700 font-bold text-xs uppercase tracking-wide mb-3" id="checkout-urgency-label">
+          ⏰ Preço promocional encerra em:
+        </p>
+        <div class="flex items-start justify-center gap-3">
+          <div class="flex flex-col items-center">
+            <span class="checkout-countdown-num" id="co-days">00</span>
+            <span class="checkout-countdown-label">dias</span>
+          </div>
+          <span style="font-size:2rem;font-weight:700;color:#dc2626;margin-top:4px;">:</span>
+          <div class="flex flex-col items-center">
+            <span class="checkout-countdown-num" id="co-hours">00</span>
+            <span class="checkout-countdown-label">horas</span>
+          </div>
+          <span style="font-size:2rem;font-weight:700;color:#dc2626;margin-top:4px;">:</span>
+          <div class="flex flex-col items-center">
+            <span class="checkout-countdown-num" id="co-mins">00</span>
+            <span class="checkout-countdown-label">minutos</span>
+          </div>
+          <span style="font-size:2rem;font-weight:700;color:#dc2626;margin-top:4px;">:</span>
+          <div class="flex flex-col items-center">
+            <span class="checkout-countdown-num" id="co-secs">00</span>
+            <span class="checkout-countdown-label">segundos</span>
+          </div>
+        </div>
+      </div>
 
       <div class="mb-6">
-        <span class="text-slate-400 line-through text-lg font-bold">De R$ 97,00</span>
+        <span id="price-from" class="text-slate-400 line-through text-lg font-bold">De R$ 97,00</span>
         <div class="font-heading text-4xl sm:text-6xl font-bold text-slate-900 my-1">
-          <span class="text-2xl sm:text-3xl text-orange-500 font-bold">R$</span> 37<span class="text-2xl">,00</span>
+          <span class="text-2xl sm:text-3xl text-orange-500 font-bold">R$</span>
+          <span id="price-main">37</span><span class="text-2xl" id="price-cents">,00</span>
         </div>
-        <p class="text-xs text-slate-500 font-semibold">Pagamento único • Sem mensalidades ou taxas ocultas</p>
+        <p id="price-label" class="text-xs text-slate-500 font-semibold">Pagamento único • Sem mensalidades ou taxas ocultas</p>
       </div>
 
       <!-- Link Kiwify -->
@@ -287,5 +405,68 @@
     </div>
   </footer>
 
+<script>
+  // =============================================================
+  // CONFIGURAÇÃO — ajuste somente aqui
+  // =============================================================
+  const PROMO_END = new Date('2026-10-24T23:59:59-03:00'); // 24/out às 23h59 (horário de Brasília)
+  const PRICE_PROMO = { main: '37', cents: ',00', from: 'De R$ 97,00', label: 'Preço de lançamento — Pagamento único • Sem mensalidades' };
+  const PRICE_NORMAL = { main: '57', cents: ',00', from: 'De R$ 97,00', label: 'Preço regular — Pagamento único • Sem mensalidades' };
+  // =============================================================
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function getTimeLeft() {
+    const now = new Date();
+    const diff = PROMO_END - now;
+    if (diff <= 0) return null;
+    const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return { days, hours, minutes, seconds };
+  }
+
+  function applyExpired() {
+    // Esconder banner e urgência
+    const banner = document.getElementById('top-banner');
+    if (banner) banner.style.display = 'none';
+    const urgency = document.getElementById('checkout-urgency');
+    if (urgency) {
+      urgency.innerHTML = '<p class="text-slate-500 text-xs font-semibold">Promoção encerrada. Preço normal aplicado.</p>';
+    }
+    // Remover animação de borda
+    const card = document.getElementById('checkout-card');
+    if (card) card.classList.remove('urgency-border');
+    // Atualizar preço
+    document.getElementById('price-main').textContent = PRICE_NORMAL.main;
+    document.getElementById('price-cents').textContent = PRICE_NORMAL.cents;
+    document.getElementById('price-from').textContent = PRICE_NORMAL.from;
+    document.getElementById('price-label').textContent = PRICE_NORMAL.label;
+  }
+
+  function updateCountdown() {
+    const t = getTimeLeft();
+    if (!t) {
+      applyExpired();
+      clearInterval(timerInterval);
+      return;
+    }
+    // Topo
+    document.getElementById('top-days').textContent  = pad(t.days);
+    document.getElementById('top-hours').textContent = pad(t.hours);
+    document.getElementById('top-mins').textContent  = pad(t.minutes);
+    document.getElementById('top-secs').textContent  = pad(t.seconds);
+    // Checkout
+    document.getElementById('co-days').textContent   = pad(t.days);
+    document.getElementById('co-hours').textContent  = pad(t.hours);
+    document.getElementById('co-mins').textContent   = pad(t.minutes);
+    document.getElementById('co-secs').textContent   = pad(t.seconds);
+  }
+
+  // Rodar imediatamente e depois a cada segundo
+  updateCountdown();
+  const timerInterval = setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
