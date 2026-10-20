@@ -113,7 +113,12 @@
           <span class="countdown-label">seg</span>
         </div>
       </div>
-      <span class="text-amber-200 text-xs font-bold hidden sm:inline">• R$ 37 → R$ 57 após o prazo</span>
+      <div class="hidden sm:flex items-center gap-2 bg-white/15 border border-white/30 rounded-xl px-3 py-1">
+        <span class="text-white/70 line-through text-xs font-bold">R$57</span>
+        <span class="text-amber-300 text-sm font-heading font-bold">R$37 AGORA</span>
+        <span class="text-white/60 text-[10px]">• vira R$57 em</span>
+        <span class="text-amber-200 text-xs font-bold" id="top-days2"></span>
+      </div>
     </div>
   </div>
 
@@ -133,11 +138,18 @@
     </p>
 
     <!-- Botão de Compra Principal -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-center gap-3 mb-6">
       <a href="#comprar" class="pulse-btn w-full sm:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-heading font-bold text-lg sm:text-xl py-4 px-10 rounded-2xl shadow-lg transition duration-200 flex items-center justify-center gap-3">
         <span>QUERO O KIT PEQUENOS GÊNIOS AGORA</span>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
       </a>
+      <!-- Badge de preço no Hero -->
+      <div id="hero-price-badge" class="flex items-center gap-2 bg-white border-2 border-orange-300 rounded-2xl px-5 py-2.5 shadow-md">
+        <span class="text-slate-400 line-through text-sm font-bold">R$57</span>
+        <span class="text-slate-300 text-lg">→</span>
+        <span class="font-heading text-2xl font-bold text-orange-500">R$ 37<span class="text-base text-slate-600">,00</span></span>
+        <span class="text-[11px] text-slate-500 font-bold border-l border-slate-200 pl-2 leading-tight">Apenas<br>hoje</span>
+      </div>
     </div>
 
     <div class="flex flex-wrap items-center justify-center gap-5 text-xs text-slate-500 font-bold">
@@ -346,7 +358,7 @@
       </div>
 
       <div class="mb-6">
-        <span id="price-from" class="text-slate-400 line-through text-lg font-bold">De R$ 97,00</span>
+        <span id="price-from" class="text-slate-400 line-through text-lg font-bold">De R$ 57,00</span>
         <div class="font-heading text-4xl sm:text-6xl font-bold text-slate-900 my-1">
           <span class="text-2xl sm:text-3xl text-orange-500 font-bold">R$</span>
           <span id="price-main">37</span><span class="text-2xl" id="price-cents">,00</span>
@@ -410,8 +422,8 @@
   // CONFIGURAÇÃO — ajuste somente aqui
   // =============================================================
   const PROMO_END = new Date('2026-10-24T23:59:59-03:00'); // 24/out às 23h59 (horário de Brasília)
-  const PRICE_PROMO = { main: '37', cents: ',00', from: 'De R$ 97,00', label: 'Preço de lançamento — Pagamento único • Sem mensalidades' };
-  const PRICE_NORMAL = { main: '57', cents: ',00', from: 'De R$ 97,00', label: 'Preço regular — Pagamento único • Sem mensalidades' };
+  const PRICE_PROMO = { main: '37', cents: ',00', from: 'De R$ 57,00', label: 'Preço de lançamento — válido até 24/out • Pagamento único' };
+  const PRICE_NORMAL = { main: '57', cents: ',00', from: '', label: 'Preço regular — Pagamento único • Sem mensalidades' };
   // =============================================================
 
   function pad(n) { return String(n).padStart(2, '0'); }
@@ -433,16 +445,20 @@
     if (banner) banner.style.display = 'none';
     const urgency = document.getElementById('checkout-urgency');
     if (urgency) {
-      urgency.innerHTML = '<p class="text-slate-500 text-xs font-semibold">Promoção encerrada. Preço normal aplicado.</p>';
+      urgency.innerHTML = '<p class="text-slate-500 text-xs font-semibold">Promoção encerrada.</p>';
     }
     // Remover animação de borda
     const card = document.getElementById('checkout-card');
     if (card) card.classList.remove('urgency-border');
-    // Atualizar preço
+    // Atualizar preço — esconder o "De" quando for o preço normal
     document.getElementById('price-main').textContent = PRICE_NORMAL.main;
     document.getElementById('price-cents').textContent = PRICE_NORMAL.cents;
-    document.getElementById('price-from').textContent = PRICE_NORMAL.from;
+    const pfrom = document.getElementById('price-from');
+    if (pfrom) pfrom.style.display = 'none'; // sem riscado no preço normal
     document.getElementById('price-label').textContent = PRICE_NORMAL.label;
+    // Atualizar badge do hero
+    const heroBadge = document.getElementById('hero-price-badge');
+    if (heroBadge) heroBadge.style.display = 'none';
   }
 
   function updateCountdown() {
@@ -457,6 +473,9 @@
     document.getElementById('top-hours').textContent = pad(t.hours);
     document.getElementById('top-mins').textContent  = pad(t.minutes);
     document.getElementById('top-secs').textContent  = pad(t.seconds);
+    // Mini-contador no badge do banner
+    const d2 = document.getElementById('top-days2');
+    if (d2) d2.textContent = t.days > 0 ? t.days + 'd ' + pad(t.hours) + 'h' : pad(t.hours) + 'h' + pad(t.minutes) + 'min';
     // Checkout
     document.getElementById('co-days').textContent   = pad(t.days);
     document.getElementById('co-hours').textContent  = pad(t.hours);
